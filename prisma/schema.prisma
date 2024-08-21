@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String
+  password String
+  function String
+
+  patients Patient[]
+
+  @@map("Usuario")
+}
+
+model Patient {
+  id        String   @id @default(uuid()) @map("paciente_id")
+  name      String   @map("nome")
+  birthdate DateTime @map("data_nascimento")
+  createdBy String   @map("criado_por")
+
+  medicalRecord MedicalRecord? @relation("PatientMedicalRecord")
+  user          User           @relation(fields: [createdBy], references: [id])
+
+  notes     Note[]
+
+  @@map("Paciente")
+}
+
+model MedicalRecord {
+  id           String   @id @default(uuid()) @map("registro_id")
+  patientId    String   @unique @map("paciente_id")
+  registerDate DateTime @map("data_registro")
+  details      String   @map("detalhes")
+
+  patient Patient @relation(fields: [patientId], references: [id], name: "PatientMedicalRecord")
+
+  @@map("Prontuario")
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  patientId String
+  noteDate  DateTime
+  content   String
+
+  patient Patient @relation(fields: [patientId], references: [id])
+}
