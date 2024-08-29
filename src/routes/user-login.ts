@@ -22,24 +22,28 @@ export async function userLogin(app: FastifyInstance){
                 password
             } = request.body
 
-            const userPassword = await prisma.user.findUnique({
+            const user = await prisma.user.findUnique({
                 where: {email: email},
-                select: {password: true}
+                select: {
+                    id: true,
+                    password: true,
+                }
             })
             
-            if (!userPassword) {
+            if (!user) {
                 throw new ClientError('User not found')
               }
             
-              const hashedPassword = userPassword.password
-                const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
-                if (!isPasswordCorrect) {
-                  throw new ClientError('Invalid credentials')
-                }
+            const hashedPassword = user.password
 
-            
+            const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
+
+            if (!isPasswordCorrect) {
+                throw new ClientError('Invalid credentials')
+              }
+
+             return {userId: user.id}
         } 
-        
         
     )
 }

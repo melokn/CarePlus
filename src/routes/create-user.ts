@@ -32,7 +32,7 @@ export async function createUser(app: FastifyInstance){
                 where: {email: email}
             })
 
-            if(!emailAlreadyExists){
+            if(emailAlreadyExists){
                 throw new ClientError('User already exists!')
             }
 
