@@ -6,11 +6,12 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from './env'
 import { errorHandler } from './error-handler'
-import { createUser } from './routes/create-user'
-import { userLogin } from './routes/user-login'
-import { createPatient } from './routes/create-patient'
-import { getPatients } from './routes/get-patients'
-import { deletePatients } from './routes/delete-patient'
+import { createUser } from './routes/users/create-user'
+import { userLogin } from './routes/users/user-login'
+import { getUsers } from './routes/users/get-users'
+import { createPatient } from './routes/patients/create-patient'
+import { getPatients } from './routes/patients/get-patients'
+import { deletePatients } from './routes/patients/delete-patient'
 
 const app = fastify()
 

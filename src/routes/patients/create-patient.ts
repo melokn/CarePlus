@@ -1,8 +1,8 @@
-import type { FastifyInstance } from 'fastify'
-import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { z } from 'zod'
-import { prisma } from '../lib/prisma'
-import { ClientError } from '../errors/client-error'
+import type{ FastifyInstance } from "fastify";
+import type{ ZodTypeProvider } from "fastify-type-provider-zod";
+import { z } from "zod";
+import { prisma } from "../../lib/prisma";
+import { ClientError } from "../../errors/client-error";
 
 export async function createPatient(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().post(
