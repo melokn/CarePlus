@@ -12,6 +12,7 @@ import { getUsers } from './routes/users/get-users'
 import { createPatient } from './routes/patients/create-patient'
 import { getPatients } from './routes/patients/get-patients'
 import { deletePatients } from './routes/patients/delete-patient'
+import { ping } from './routes/ping'
 
 const app = fastify()
 
@@ -22,12 +23,14 @@ app.register(cors, {
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
-app.setErrorHandler(errorHandler)
+// app.setErrorHandler(errorHandler)
 app.register(createUser)
 app.register(userLogin)
+app.register(getUsers)
 app.register(createPatient, { prefix: '/users/:userId' })
 app.register(getPatients, { prefix: '/users/:userId' })
 app.register(deletePatients, { prefix: '/users/:userId' })
+app.register(ping)
 
 app.listen({ port: env.PORT }, () => {
   console.log(`Server running on port ${env.PORT}!`)
