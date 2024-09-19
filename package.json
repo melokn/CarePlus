@@ -27,6 +27,7 @@
     "fastify": "^4.28.1",
     "fastify-type-provider-zod": "^2.0.0",
     "prisma": "^5.19.1",
+    "readable-stream": "^4.5.2",
     "zod": "^3.23.8"
   }
 }
