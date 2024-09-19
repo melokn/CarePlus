@@ -32,6 +32,8 @@ app.register(getPatients, { prefix: '/users/:userId' })
 app.register(deletePatients, { prefix: '/users/:userId' })
 app.register(ping)
 
-app.listen({ port: env.PORT }, () => {
-  console.log(`Server running on port ${env.PORT}!`)
+app.listen({
+  port: 4060,
+}).then(() => {
+  console.log("Server running on port 4060");
 })
