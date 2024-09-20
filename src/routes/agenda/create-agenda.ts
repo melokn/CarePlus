@@ -4,17 +4,18 @@ import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
 
-export async function createMedicalRecord(app: FastifyInstance){
+export async function createAgenda(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/medicalRecord/addMedicalRecord',
+    '/Agenda/addAgenda',
     {
       schema: {
         params: z.object({
           patientId: z.string().uuid()
         }),
         body: z.object({
-          registerDate: z.coerce.date(),
-          details: z.string()
+          date: z.coerce.date(),
+          description: z.string(),
+          agendaType: z.string()
         })
       }
     },
@@ -22,14 +23,15 @@ export async function createMedicalRecord(app: FastifyInstance){
     async(request) => {
       const {patientId} = request.params
       const {
-        registerDate,
-        details
+        date,
+        description,
+        agendaType
       } = request.body
 
       const patient = await prisma.patient.findUnique({
         where: {id: patientId},
           include: {
-            medicalRecord:true
+            appointments:true
           }
       })
 
@@ -37,15 +39,16 @@ export async function createMedicalRecord(app: FastifyInstance){
         throw new ClientError('Patient not found.')
       }
 
-      const medicalRecord = await prisma.medicalRecord.create({
+      const agenda = await prisma.agenda.create({
         data: {
           patientId,
-          registerDate,
-          details
+          date,
+          description,
+          agendaType
         }
       })
       
-      return { medicalRecord: medicalRecord.id }
+      return { agenda: agenda.id }
     }
   )
 }

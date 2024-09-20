@@ -26,31 +26,34 @@ model User {
 }
 
 model Patient {
-  id        String   @id @default(uuid()) 
-  name      String  
-  birthdate DateTime 
+  id            String   @id @default(uuid()) 
+  name          String  
+  age           Int 
+  observations  String
+  height        Float
+  bloodType     String
+  alergies      String
+
+
   createdBy String   
 
-  medicalRecord MedicalRecord? @relation("PatientMedicalRecord")
   user          User           @relation(fields: [createdBy], references: [id])
 
+  images        Image[]
   notes         Note[]
   appointments  Agenda[]
   @@map("Paciente")
 }
 
+model Image {
+  id        String  @id @default(uuid())
+  patientId String
+  url       String     
 
-model MedicalRecord {
-  id           String   @id @default(uuid())
-  patientId    String   @unique 
-  registerDate DateTime 
-  details      String   
 
-  patient Patient @relation(fields: [patientId], references: [id], name: "PatientMedicalRecord")
+  patient Patient @relation(fields: patientId, references: id)
 
-  @@map("Prontuario")
 }
-
 model Note {
   id        String   @id @default(uuid())
   patientId String

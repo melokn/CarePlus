@@ -4,9 +4,9 @@ import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
 
-export async function getMedicalRecord(app: FastifyInstance) {
+export async function getAgenda(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
-    '/medicalRecord',
+    '/agenda',
     {
       schema: {
         params: z.object({
@@ -18,18 +18,18 @@ export async function getMedicalRecord(app: FastifyInstance) {
       const { patientId } = request.params
       
 
-      const medicalRecord = await prisma.patient.findUnique({
+      const agenda = await prisma.patient.findUnique({
         where: {id: patientId},
-          include: {
-            medicalRecord: true
-          }
+        include: {
+            appointments: true
+        }
       })
 
-      if(!medicalRecord){
+      if(!agenda){
         throw new ClientError('Patient not found.')
       }
 
-      return {medicalRecord}
+      return {agenda}
     }
   )
 }
