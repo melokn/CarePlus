@@ -12,9 +12,11 @@ import { createPatient } from './routes/patients/create-patient'
 import { getSpecificPatients } from './routes/patients/get-specific-patients'
 import { deletePatients } from './routes/patients/delete-patient'
 import { ping } from './routes/ping'
-import { getMedicalRecord } from './routes/medicalRecords/get-medical-records'
 import { getPatients } from './routes/patients/get-patients'
-import { createMedicalRecord } from './routes/medicalRecords/create-medical-record'
+import { createAgenda } from './routes/agenda/create-agenda'
+import { deleteAgenda } from './routes/agenda/delete-agenda'
+import { getAgenda } from './routes/agenda/get-agenda'
+import { updateAgenda } from './routes/agenda/update-agenda'
 
 
 const app = fastify()
@@ -34,11 +36,14 @@ app.register(getUsers)
 
 app.register(createPatient, { prefix: '/users/:userId' })
 app.register(getSpecificPatients, { prefix: '/users/:userId' })
-app.register(deletePatients, { prefix: '/users/:userId' })
+app.register(deletePatients)
 app.register(getPatients)
 
-app.register(getMedicalRecord)
-app.register(createMedicalRecord, { prefix: '/patients/:patientId' })
+app.register(createAgenda, { prefix: '/patients/:patientId'})
+app.register(deleteAgenda)
+app.register(getAgenda, { prefix: '/patients/:patientId'})
+app.register(updateAgenda)
+
 
 app.register(ping)
 

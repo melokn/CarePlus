@@ -15,10 +15,11 @@ export async function createPatient(app: FastifyInstance){
         body: z.object({
           name: z.string(),
           age: z.number(),
+          urlIcon: z.string(),
           observations: z.string(),
           height: z.number(),
           bloodType: z.string(),
-          alergies: z.string(),
+          allergies: z.string(),
         })
       }
     },
@@ -28,10 +29,11 @@ export async function createPatient(app: FastifyInstance){
       const {
         name,
         age,
+        urlIcon,
         observations,
         height,
         bloodType,
-        alergies
+        allergies
       } = request.body
 
       const user = await prisma.user.findUnique({
@@ -49,10 +51,11 @@ export async function createPatient(app: FastifyInstance){
         data: {
           name,
           age,
+          urlIcon,
           observations,
           height,
           bloodType,
-          alergies,
+          allergies,
           createdBy: user.id
         }
       })

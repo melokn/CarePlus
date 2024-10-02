@@ -26,34 +26,25 @@ model User {
 }
 
 model Patient {
-  id            String   @id @default(uuid()) 
-  name          String  
-  age           Int 
-  observations  String
-  height        Float
-  bloodType     String
-  alergies      String
+  id           String @id @default(uuid())
+  name         String
+  age          Int
+  urlIcon      String
+  observations String
+  height       Float
+  bloodType    String
+  allergies    String
 
+  createdBy String
 
-  createdBy String   
+  user User @relation(fields: [createdBy], references: [id])
 
-  user          User           @relation(fields: [createdBy], references: [id])
+  notes        Note[]
+  appointments Agenda[]
 
-  images        Image[]
-  notes         Note[]
-  appointments  Agenda[]
   @@map("Paciente")
 }
 
-model Image {
-  id        String  @id @default(uuid())
-  patientId String
-  url       String     
-
-
-  patient Patient @relation(fields: patientId, references: id)
-
-}
 model Note {
   id        String   @id @default(uuid())
   patientId String
@@ -66,20 +57,19 @@ model Note {
 }
 
 model Hint {
-  id        String    @id @default(uuid())
-  title     String
-  content   String  
+  id      String @id @default(uuid())
+  title   String
+  content String
 
   @@map("Dica")
 }
 
 model Agenda {
-  id          String    @id @default(uuid())
-  patientId   String  
+  id          String   @id @default(uuid())
+  patientId   String
   date        DateTime
   description String
   agendaType  String
 
   patient Patient @relation(fields: [patientId], references: [id])
-
 }

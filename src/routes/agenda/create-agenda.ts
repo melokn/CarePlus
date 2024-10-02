@@ -6,7 +6,7 @@ import { ClientError } from "../../errors/client-error";
 
 export async function createAgenda(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/Agenda/addAgenda',
+    '/agenda/addAgenda',
     {
       schema: {
         params: z.object({

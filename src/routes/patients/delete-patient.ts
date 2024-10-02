@@ -9,21 +9,16 @@ export async function deletePatients(app: FastifyInstance) {
     '/patients/delete',
     {
       schema: {
-        params: z.object({
-          userId: z.string().uuid()
-        }),
         body: z.object({
           patientId: z.string().uuid()
         })
       }
     },
     async (request) => {
-      const { userId } = request.params
       const { patientId } = request.body
 
       const userWithPatient = await prisma.user.findFirst({
         where: {
-          id: userId,
           patients: {
             some: { id: patientId }
           }
@@ -31,7 +26,7 @@ export async function deletePatients(app: FastifyInstance) {
       });
 
       if (!userWithPatient) {
-        throw new ClientError('User or Patient not found.');
+        throw new ClientError('Patient not found.');
       }
       const deletedPatient = await prisma.patient.delete({
         where: {id: patientId}
