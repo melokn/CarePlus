@@ -39,10 +39,10 @@ app.register(getSpecificPatients, { prefix: '/users/:userId' })
 app.register(deletePatients)
 app.register(getPatients)
 
-app.register(createAgenda, { prefix: '/patients/:patientId'})
-app.register(deleteAgenda)
-app.register(getAgenda, { prefix: '/patients/:patientId'})
-app.register(updateAgenda)
+// app.register(createAgenda, { prefix: '/patients/:patientId'})
+// app.register(deleteAgenda)
+// app.register(getAgenda, { prefix: '/patients/:patientId'})
+// app.register(updateAgenda)
 
 
 app.register(ping)
