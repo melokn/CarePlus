@@ -1,49 +1,48 @@
-import type{ FastifyInstance } from "fastify";
-import type{ ZodTypeProvider } from "fastify-type-provider-zod";
+import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
+import type { FastifyInstance } from "fastify";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
-import bcrypt from 'bcrypt'
+import { cognito } from "../../lib/cognito";
 
-export async function userLogin(app: FastifyInstance){
-    app.withTypeProvider<ZodTypeProvider>().post(
-        '/users/login', {
-            schema: {
-                body: z.object({
-                    email: z.string().email(),
-                    password: z.string()
-                }) 
-            },
-        },
+export async function userLogin(app: FastifyInstance) {
+  
 
-        async(request) => {
-            const {
-                email,
-                password
-            } = request.body
+  app.withTypeProvider<ZodTypeProvider>().post(
+    '/users/login', {
+      schema: {
+        body: z.object({
+          email: z.string().email(),
+          password: z.string(),
+        }),
+      },
+    },
+    async (request) => {
+      const { email, password } = request.body;
 
-            const user = await prisma.user.findUnique({
-                where: {email: email},
-                select: {
-                    id: true,
-                    password: true,
-                }
-            })
-            
-            if (!user) {
-                throw new ClientError('User not found')
-              }
-            
-            const hashedPassword = user.password
+      try {
+        // Autenticar o usuário com Cognito
+        const authCommand = new InitiateAuthCommand({
+          AuthFlow: "USER_PASSWORD_AUTH",
+          ClientId: "1ckon32hg88d3cv1opo8bm1b4", 
+          AuthParameters: {
+            USERNAME: email,
+            PASSWORD: password,
+          },
+        });
 
-            const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
-
-            if (!isPasswordCorrect) {
-                throw new ClientError('Invalid credentials')
-              }
-
-             return {userId: user.id}
-        } 
-        
-    )
+        const authResponse = await cognito.send(authCommand);
+        console.log('Resposta do Cognito:', authResponse)
+        // Retornar tokens JWT ou informações de usuário conforme necessário
+        return {
+          accessToken: authResponse.AuthenticationResult?.AccessToken,
+          idToken: authResponse.AuthenticationResult?.IdToken,
+          refreshToken: authResponse.AuthenticationResult?.RefreshToken,
+        };
+      } catch (error) {
+        console.error(error);
+        throw new ClientError("Invalid credentials or Cognito error");
+      }
+    }
+  );
 }
