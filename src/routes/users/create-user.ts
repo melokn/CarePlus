@@ -13,7 +13,7 @@ import {
     MessageActionType,
 } from '@aws-sdk/client-cognito-identity-provider';
 
-// Cria um usuário no Cognito
+
 async function createUserInCognito(email: string, password: string) {
     const params = {
         UserPoolId: 'us-east-1_pWW7QLgWV',
@@ -28,20 +28,20 @@ async function createUserInCognito(email: string, password: string) {
                 Value: 'true'
             }
         ],
-        MessageAction: MessageActionType.SUPPRESS // Use a enum correta para suprimir o email
+        MessageAction: MessageActionType.SUPPRESS 
     };
 
     try {
-        // Cria o usuário
+        
         const command = new AdminCreateUserCommand(params);
         await cognito.send(command);
 
-        // Define a senha do usuário sem forçar a mudança
+        
         const setPasswordCommand = new AdminSetUserPasswordCommand({
             UserPoolId: 'us-east-1_pWW7QLgWV',
             Username: email,
             Password: password,
-            Permanent: true, // Define a senha como permanente
+            Permanent: true, 
         });
 
         await cognito.send(setPasswordCommand);
