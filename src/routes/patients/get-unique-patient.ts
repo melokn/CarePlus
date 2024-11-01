@@ -26,7 +26,6 @@ export async function getUniquePatient(app: FastifyInstance) {
             bloodType:true,
             height:true,
             icon: true,
-            notes:true,
             observations:true
           }
       })
