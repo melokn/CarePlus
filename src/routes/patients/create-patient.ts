@@ -15,7 +15,7 @@ export async function createPatient(app: FastifyInstance){
         body: z.object({
           name: z.string(),
           age: z.number(),
-          urlIcon: z.string(),
+          icon: z.string(),
           observations: z.string(),
           height: z.number(),
           bloodType: z.string(),
@@ -29,7 +29,7 @@ export async function createPatient(app: FastifyInstance){
       const {
         name,
         age,
-        urlIcon,
+        icon,
         observations,
         height,
         bloodType,
@@ -47,20 +47,25 @@ export async function createPatient(app: FastifyInstance){
         throw new ClientError('User not found.')
       }
 
-      const patient = await prisma.patient.create({
-        data: {
-          name,
-          age,
-          urlIcon,
-          observations,
-          height,
-          bloodType,
-          allergies,
-          createdBy: user.id
-        }
-      })
+      try {
+        const patient = await prisma.patient.create({
+          data: {
+            name,
+            age,
+            icon,
+            observations,
+            height,
+            bloodType,
+            allergies,
+            createdBy: user.id,
+          },
+        });
+        return { patientId: patient.id };
+      } catch (error) {
+        console.error("Erro ao criar o paciente:", error);
+        throw new Error("Erro interno ao criar o paciente.");
+      }
       
-      return { patientId: patient.id }
     }
   )
 }

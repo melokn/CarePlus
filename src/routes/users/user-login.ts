@@ -4,6 +4,8 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { ClientError } from "../../errors/client-error";
 import { cognito } from "../../lib/cognito";
+import { prisma } from "../../lib/prisma";
+import { error } from "console";
 
 export async function userLogin(app: FastifyInstance) {
   
@@ -32,9 +34,20 @@ export async function userLogin(app: FastifyInstance) {
         });
 
         const authResponse = await cognito.send(authCommand);
-        console.log('Resposta do Cognito:', authResponse)
+        const user = await prisma.user.findUnique(
+          {where: {email: email},
+          select: {
+            id: true
+          }
+          }
+        )
+        if(!user){
+          throw new ClientError('User not found')
+        }
+        
         // Retornar tokens JWT ou informações de usuário conforme necessário
         return {
+          userId: user.id,
           accessToken: authResponse.AuthenticationResult?.AccessToken,
           idToken: authResponse.AuthenticationResult?.IdToken,
           refreshToken: authResponse.AuthenticationResult?.RefreshToken,

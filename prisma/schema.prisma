@@ -29,7 +29,7 @@ model Patient {
   id           String @id @default(uuid())
   name         String
   age          Int
-  urlIcon      String
+  icon         String
   observations String
   height       Float
   bloodType    String
