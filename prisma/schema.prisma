@@ -21,6 +21,7 @@ model User {
   function String
 
   patients Patient[]
+  notes        Note[]
 
   @@map("Usuario")
 }
@@ -39,19 +40,22 @@ model Patient {
 
   user User @relation(fields: [createdBy], references: [id])
 
-  notes        Note[]
+  
   appointments Agenda[]
 
   @@map("Paciente")
 }
 
 model Note {
-  id        String   @id @default(uuid())
-  patientId String
-  noteDate  DateTime
-  content   String
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  priority    String
+  patientName String
+  content     String
+  createdBy   String
 
-  patient Patient @relation(fields: [patientId], references: [id])
+  user User @relation(fields: [createdBy], references: [id])
 
   @@map("Anotacao")
 }

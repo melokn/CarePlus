@@ -5,7 +5,7 @@ import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
 
 export async function deletePatients(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().delete(
+  app.withTypeProvider<ZodTypeProvider>().post(
     '/patients/delete',
     {
       schema: {

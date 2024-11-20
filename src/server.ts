@@ -18,6 +18,7 @@ import { deleteAgenda } from './routes/agenda/delete-agenda'
 import { getAgenda } from './routes/agenda/get-agenda'
 import { updateAgenda } from './routes/agenda/update-agenda'
 import { getUniquePatient } from './routes/patients/get-unique-patient'
+import { updatePatient } from './routes/patients/update-patient'
 
 
 const app = fastify()
@@ -40,6 +41,7 @@ app.register(getSpecificPatients, { prefix: '/users/:userId' })
 app.register(deletePatients)
 app.register(getPatients)
 app.register(getUniquePatient)
+app.register(updatePatient)
 
 // app.register(createAgenda, { prefix: '/patients/:patientId'})
 // app.register(deleteAgenda)
