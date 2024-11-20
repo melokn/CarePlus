@@ -16,8 +16,7 @@ export async function createNote(app: FastifyInstance){
           title: z.string(),
           description: z.string(),
           priority: z.string(),
-          patientName: z.string(),
-          content: z.string()
+          patientName: z.string()
         })
       }
     },
@@ -29,7 +28,6 @@ export async function createNote(app: FastifyInstance){
         description,
         priority,
         patientName,
-        content
       } = request.body
 
       const user = await prisma.user.findUnique({
@@ -49,7 +47,6 @@ export async function createNote(app: FastifyInstance){
           description,
           priority,
           patientName,
-          content,
           createdBy: userId
         }
       })

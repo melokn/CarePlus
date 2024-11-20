@@ -4,22 +4,22 @@ import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
 
-export async function deleteNotes(app: FastifyInstance) {
+export async function deleteNote(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/notes/delete',
     {
       schema: {
         body: z.object({
-          noteId: z.string().uuid()
+          title: z.string()
         })
       }
     },
     async (request) => {
-      const { noteId } = request.body
+      const { title } = request.body
 
       const note = await prisma.note.findFirst({
         where: {
-          id: noteId
+          title: title
         }, select:{
           id:true
         }
@@ -29,11 +29,11 @@ export async function deleteNotes(app: FastifyInstance) {
         throw new ClientError('Note not found.');
       }
       const deletedNote = await prisma.note.delete({
-        where: {id: noteId}
+        where: {title: title}
       })
       
     
-      return { patientId: deletedNote.id }
+      return { noteId: deletedNote.id }
     }
   )
 }

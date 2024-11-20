@@ -48,11 +48,10 @@ model Patient {
 
 model Note {
   id          String   @id @default(uuid())
-  title       String
+  title       String   @unique
   description String
   priority    String
   patientName String
-  content     String
   createdBy   String
 
   user User @relation(fields: [createdBy], references: [id])

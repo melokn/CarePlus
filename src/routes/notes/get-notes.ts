@@ -4,7 +4,7 @@ import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 import { ClientError } from "../../errors/client-error";
 
-export async function getSpecificPatients(app: FastifyInstance) {
+export async function getNotes(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
     '/notes',
     {
@@ -28,7 +28,7 @@ export async function getSpecificPatients(app: FastifyInstance) {
         throw new ClientError('User not found.')
       }
 
-      return { patients: user.notes}
+      return { notes: user.notes}
     }
   )
 }
