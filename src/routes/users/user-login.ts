@@ -37,7 +37,8 @@ export async function userLogin(app: FastifyInstance) {
         const user = await prisma.user.findUnique(
           {where: {email: email},
           select: {
-            id: true
+            id: true,
+            name: true
           }
           }
         )
@@ -48,6 +49,7 @@ export async function userLogin(app: FastifyInstance) {
         // Retornar tokens JWT ou informações de usuário conforme necessário
         return {
           userId: user.id,
+          username: user.name,
           accessToken: authResponse.AuthenticationResult?.AccessToken,
           idToken: authResponse.AuthenticationResult?.IdToken,
           refreshToken: authResponse.AuthenticationResult?.RefreshToken,

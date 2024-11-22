@@ -13,16 +13,14 @@ import { getSpecificPatients } from './routes/patients/get-specific-patients'
 import { deletePatients } from './routes/patients/delete-patient'
 import { ping } from './routes/ping'
 import { getPatients } from './routes/patients/get-patients'
-import { createAgenda } from './routes/agenda/create-agenda'
-import { deleteAgenda } from './routes/agenda/delete-agenda'
-import { getAgenda } from './routes/agenda/get-agenda'
-import { updateAgenda } from './routes/agenda/update-agenda'
 import { getUniquePatient } from './routes/patients/get-unique-patient'
 import { updatePatient } from './routes/patients/update-patient'
 import { createNote } from './routes/notes/create-note'
 import { deleteNote } from './routes/notes/delete-note'
 import { getNotes } from './routes/notes/get-notes'
-
+import { createHint } from './routes/hints/create-hint'
+import { getHints } from './routes/hints/get-hints'
+import { deleteHint } from './routes/hints/delete-hint'
 
 const app = fastify()
 
@@ -49,10 +47,10 @@ app.register(updatePatient)
 app.register(createNote, {prefix: '/users/:userId'})
 app.register(deleteNote, {prefix: '/users/:userId'})
 app.register(getNotes, {prefix: '/users/:userId'})
-// app.register(createAgenda, { prefix: '/patients/:patientId'})
-// app.register(deleteAgenda)
-// app.register(getAgenda, { prefix: '/patients/:patientId'})
-// app.register(updateAgenda)
+
+app.register(createHint)
+app.register(getHints)
+app.register(deleteHint)
 
 
 app.register(ping)

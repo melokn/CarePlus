@@ -61,7 +61,7 @@ model Note {
 
 model Hint {
   id      String @id @default(uuid())
-  title   String
+  author   String
   content String
 
   @@map("Dica")
