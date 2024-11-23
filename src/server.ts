@@ -57,8 +57,6 @@ app.register(deleteHint)
 app.register(ping)
 
 
-app.listen({
-  port: env.PORT,
-}).then(() => {
+app.listen(env.PORT, () => {
   console.log(`Server running on port ${env.PORT}`);
-})
+});
