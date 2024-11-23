@@ -33,6 +33,7 @@
     "fastify-type-provider-zod": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "readable-stream": "^4.5.2",
+    "tsup": "^8.3.5",
     "zod": "^3.23.8"
   }
 }
