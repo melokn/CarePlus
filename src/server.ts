@@ -21,6 +21,7 @@ import { getNotes } from './routes/notes/get-notes'
 import { createHint } from './routes/hints/create-hint'
 import { getHints } from './routes/hints/get-hints'
 import { deleteHint } from './routes/hints/delete-hint'
+import { env } from './env'
 
 const app = fastify()
 
@@ -55,8 +56,9 @@ app.register(deleteHint)
 
 app.register(ping)
 
+
 app.listen({
-  port: 4060,
+  port: env.PORT,
 }).then(() => {
-  console.log("Server running on port 4060");
+  console.log(`Server running on port ${env.PORT}`);
 })
